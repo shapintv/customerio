@@ -18,9 +18,11 @@ $ composer require shapintv/customerio
 ## Usage
 
 ``` php
-$customerIOClient = CustomerIOClient::create($customerIOApiKey);
-$balance = $apiClient->balances()->get();
-echo $balance->getAvailable()->getAmount()->getAmount(); // 22;
+$customerIOClient = CustomerIOClient::create($customerIOSiteId, $customerIOApiKey);
+// Create a customer
+$apiClient->customers()->createOrUpdate('my_custom_id', [
+    'email' => 'georges@abitbol.com',
+]);
 ```
 
 ## License
