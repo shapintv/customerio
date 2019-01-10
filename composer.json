@@ -1,8 +1,8 @@
 {
-    "name": "shapin/customerIO",
-    "description": "PHP client for CustomerIO API",
+    "name": "shapin/customerio",
+    "description": "PHP client for customer.io API",
     "license": "MIT",
-    "keywords": ["api", "customerIO"],
+    "keywords": ["api", "crm", "marketing", "customerio"],
     "authors": [
         {
             "name": "Olivier Dolbeaua",
