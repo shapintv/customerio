@@ -33,4 +33,19 @@ final class Customer extends HttpApi
 
         return $this->hydrator->hydrate($response, Model\Customer\CustomerCreatedOrUpdated::class);
     }
+
+    public function delete(string $id)
+    {
+        $response = $this->httpDelete("/api/v1/customers/$id");
+
+        if (!$this->hydrator) {
+            return $response;
+        }
+
+        if (200 !== $response->getStatusCode()) {
+            $this->handleErrors($response);
+        }
+
+        return $this->hydrator->hydrate($response, Model\Customer\CustomerDeleted::class);
+    }
 }
