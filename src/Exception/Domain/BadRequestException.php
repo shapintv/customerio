@@ -21,7 +21,7 @@ class BadRequestException extends \Exception implements DomainException
         $this->response = $response;
         $content = json_decode($response->getBody()->__toString(), true);
 
-        parent::__construct($content['error']['message']);
+        parent::__construct(implode(' / ', $content['meta']['errors']));
     }
 
     public function getResponse(): ResponseInterface
