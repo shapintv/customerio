@@ -18,7 +18,7 @@ final class Event extends HttpApi
     /**
      * @throws Exception
      */
-    public function trackCustomerEvent(string $id, string $name, array $data = [], ?string $type)
+    public function trackCustomerEvent(string $id, string $name, array $data = [], string $type = null)
     {
         $params = [
             'name' => $name,
