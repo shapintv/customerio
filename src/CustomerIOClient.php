@@ -65,4 +65,9 @@ final class CustomerIOClient
     {
         return new Api\Customer($this->httpClient, $this->hydrator, $this->requestBuilder);
     }
+
+    public function events(): Api\Event
+    {
+        return new Api\Event($this->httpClient, $this->hydrator, $this->requestBuilder);
+    }
 }
