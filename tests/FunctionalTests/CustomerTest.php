@@ -7,13 +7,12 @@ declare(strict_types=1);
  * of the MIT license. See the LICENSE file for details.
  */
 
-namespace Shapin\CustomerIO\Tests\FunctionalTests\Charge;
+namespace Shapin\CustomerIO\Tests\FunctionalTests;
 
 use Shapin\CustomerIO\Exception\Domain\NotFoundException;
 use Shapin\CustomerIO\Model\Customer\CustomerCreatedOrUpdated;
-use Shapin\CustomerIO\Tests\FunctionalTests\TestCase;
 
-final class CreateOrUpdateTest extends TestCase
+final class CustomerTest extends TestCase
 {
     private $api;
 

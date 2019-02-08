@@ -23,10 +23,6 @@ final class Customer extends HttpApi
     {
         $response = $this->httpPut("/api/v1/customers/$id", $params);
 
-        if (!$this->hydrator) {
-            return $response;
-        }
-
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);
         }
@@ -37,10 +33,6 @@ final class Customer extends HttpApi
     public function delete(string $id)
     {
         $response = $this->httpDelete("/api/v1/customers/$id");
-
-        if (!$this->hydrator) {
-            return $response;
-        }
 
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);

@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Api;
 
+use Http\Client\HttpClient;
+use Psr\Http\Message\ResponseInterface;
 use Shapin\CustomerIO\Exception\Domain as DomainExceptions;
 use Shapin\CustomerIO\Exception\DomainException;
-use Shapin\CustomerIO\Hydrator\NoopHydrator;
-use Http\Client\HttpClient;
+use Shapin\CustomerIO\Exception\LogicException;
 use Shapin\CustomerIO\Hydrator\Hydrator;
 use Shapin\CustomerIO\RequestBuilder;
-use Psr\Http\Message\ResponseInterface;
 
 abstract class HttpApi
 {
@@ -34,28 +34,15 @@ abstract class HttpApi
      */
     protected $requestBuilder;
 
-    /**
-     * @param HttpClient     $httpClient
-     * @param RequestBuilder $requestBuilder
-     * @param Hydrator       $hydrator
-     */
     public function __construct(HttpClient $httpClient, Hydrator $hydrator, RequestBuilder $requestBuilder)
     {
         $this->httpClient = $httpClient;
         $this->requestBuilder = $requestBuilder;
-        if (!$hydrator instanceof NoopHydrator) {
-            $this->hydrator = $hydrator;
-        }
+        $this->hydrator = $hydrator;
     }
 
     /**
      * Send a GET request with query parameters.
-     *
-     * @param string $path           Request path
-     * @param array  $params         GET parameters
-     * @param array  $requestHeaders Request Headers
-     *
-     * @return ResponseInterface
      */
     protected function httpGet(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
@@ -70,12 +57,6 @@ abstract class HttpApi
 
     /**
      * Send a POST request with JSON-encoded parameters.
-     *
-     * @param string $path           Request path
-     * @param array  $params         POST parameters to be JSON encoded
-     * @param array  $requestHeaders Request headers
-     *
-     * @return ResponseInterface
      */
     protected function httpPost(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
@@ -84,12 +65,6 @@ abstract class HttpApi
 
     /**
      * Send a POST request with raw data.
-     *
-     * @param string       $path           Request path
-     * @param array|string $body           Request body
-     * @param array        $requestHeaders Request headers
-     *
-     * @return ResponseInterface
      */
     protected function httpPostRaw(string $path, $body, array $requestHeaders = []): ResponseInterface
     {
@@ -100,12 +75,6 @@ abstract class HttpApi
 
     /**
      * Send a PUT request with JSON-encoded parameters.
-     *
-     * @param string $path           Request path
-     * @param array  $params         POST parameters to be JSON encoded
-     * @param array  $requestHeaders Request headers
-     *
-     * @return ResponseInterface
      */
     protected function httpPut(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
@@ -116,12 +85,6 @@ abstract class HttpApi
 
     /**
      * Send a DELETE request with JSON-encoded parameters.
-     *
-     * @param string $path           Request path
-     * @param array  $params         POST parameters to be JSON encoded
-     * @param array  $requestHeaders Request headers
-     *
-     * @return ResponseInterface
      */
     protected function httpDelete(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
@@ -133,21 +96,27 @@ abstract class HttpApi
     /**
      * Create a JSON encoded version of an array of parameters.
      *
-     * @param array $params Request parameters
-     *
-     * @return null|string
+     * @throws LogicException
      */
-    private function createJsonBody(array $params)
+    private function createJsonBody(array $params): ?string
     {
-        return (0 === \count($params)) ? null : json_encode($params, empty($params) ? JSON_FORCE_OBJECT : 0);
+        if (0 === \count($params)) {
+            return null;
+        }
+
+        $body = json_encode($params, \JSON_FORCE_OBJECT);
+
+        if (!is_string($body)) {
+            throw new LogicException('An error occured when encoding body: '.json_last_error_msg());
+        }
+
+        return $body;
     }
 
     /**
      * Handle HTTP errors.
      *
      * Call is controlled by the specific API methods.
-     *
-     * @param ResponseInterface $response
      *
      * @throws DomainException
      */

@@ -31,10 +31,6 @@ final class Event extends HttpApi
 
         $response = $this->httpPost("/api/v1/customers/$id/events", $params);
 
-        if (!$this->hydrator) {
-            return $response;
-        }
-
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);
         }
@@ -51,10 +47,6 @@ final class Event extends HttpApi
             'name' => $name,
             'data' => $data,
         ]);
-
-        if (!$this->hydrator) {
-            return $response;
-        }
 
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);
