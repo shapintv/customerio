@@ -17,7 +17,7 @@ final class CreateOrUpdateTest extends TestCase
 {
     private $api;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->api = $this->getCustomerIOClient()->customers();
     }
