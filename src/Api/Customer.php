@@ -21,7 +21,7 @@ final class Customer extends HttpApi
      */
     public function createOrUpdate(string $id, array $params)
     {
-        $response = $this->httpPut("/api/v1/customers/$id", $params);
+        $response = $this->httpPut("customers/$id", $params);
 
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);
@@ -32,7 +32,7 @@ final class Customer extends HttpApi
 
     public function delete(string $id)
     {
-        $response = $this->httpDelete("/api/v1/customers/$id");
+        $response = $this->httpDelete("customers/$id");
 
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);

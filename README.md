@@ -18,7 +18,17 @@ $ composer require shapintv/customerio
 ## Usage
 
 ``` php
-$customerIOClient = CustomerIOClient::create($customerIOSiteId, $customerIOApiKey);
+// Create a HTTP Client
+$httpClient = HttpClient::create([
+    'base_uri' => 'https://track.customer.io/api/v1/',
+    'auth_basic' => [self::SITE_ID, self::API_KEY],
+    'headers' => [
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$apiClient = new CustomerIOClient($httpClient);
+
 // Create a customer
 $apiClient->customers()->createOrUpdate('my_custom_id', [
     'email' => 'georges@abitbol.com',

@@ -11,7 +11,7 @@ namespace Shapin\CustomerIO;
 
 use Shapin\CustomerIO\Hydrator\ModelHydrator;
 use Shapin\CustomerIO\Hydrator\Hydrator;
-use Http\Client\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class CustomerIOClient
 {
@@ -26,48 +26,22 @@ final class CustomerIOClient
     private $hydrator;
 
     /**
-     * @var RequestBuilder
-     */
-    private $requestBuilder;
-
-    /**
      * The constructor accepts already configured HTTP clients.
      * Use the configure method to pass a configuration to the Client and create an HTTP Client.
      */
-    public function __construct(
-        HttpClient $httpClient,
-        Hydrator $hydrator = null,
-        RequestBuilder $requestBuilder = null
-    ) {
-        $this->httpClient = $httpClient;
-        $this->hydrator = $hydrator ?: new ModelHydrator();
-        $this->requestBuilder = $requestBuilder ?: new RequestBuilder();
-    }
-
-    public static function configure(
-        HttpClientConfigurator $httpClientConfigurator,
-        Hydrator $hydrator = null,
-        RequestBuilder $requestBuilder = null
-    ): self {
-        $httpClient = $httpClientConfigurator->createConfiguredClient();
-
-        return new self($httpClient, $hydrator, $requestBuilder);
-    }
-
-    public static function create(string $apiKey): self
+    public function __construct(HttpClientInterface $customerioClient, Hydrator $hydrator = null)
     {
-        $httpClientConfigurator = (new HttpClientConfigurator())->setApiKey($apiKey);
-
-        return self::configure($httpClientConfigurator);
+        $this->httpClient = $customerioClient;
+        $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
     public function customers(): Api\Customer
     {
-        return new Api\Customer($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Customer($this->httpClient, $this->hydrator);
     }
 
     public function events(): Api\Event
     {
-        return new Api\Event($this->httpClient, $this->hydrator, $this->requestBuilder);
+        return new Api\Event($this->httpClient, $this->hydrator);
     }
 }

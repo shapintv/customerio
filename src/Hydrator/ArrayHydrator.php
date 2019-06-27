@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Shapin\CustomerIO\Hydrator;
 
 use Shapin\CustomerIO\Exception\HydrationException;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * Hydrate an HTTP response to array.

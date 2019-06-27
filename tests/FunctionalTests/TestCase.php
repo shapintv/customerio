@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Tests\FunctionalTests;
 
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Shapin\CustomerIO\HttpClientConfigurator;
 use Shapin\CustomerIO\CustomerIOClient;
-use GuzzleHttp\Psr7\Request;
-use Http\Client\Exception\NetworkException;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use Symfony\Component\HttpClient\HttpClient;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,13 +21,13 @@ abstract class TestCase extends BaseTestCase
 
     public function getCustomerIOClient()
     {
-        $httpClientConfigurator = new HttpClientConfigurator();
-        $httpClientConfigurator
-            ->setSiteId(self::SITE_ID)
-            ->setApiKey(self::API_KEY)
-        ;
-
-        $httpClient = $httpClientConfigurator->createConfiguredClient();
+        $httpClient = HttpClient::create([
+            'base_uri' => 'https://track.customer.io/api/v1/',
+            'auth_basic' => [self::SITE_ID, self::API_KEY],
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ]);
 
         return new CustomerIOClient($httpClient);
     }

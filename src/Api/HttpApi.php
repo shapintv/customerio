@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Api;
 
-use Http\Client\HttpClient;
-use Psr\Http\Message\ResponseInterface;
 use Shapin\CustomerIO\Exception\Domain as DomainExceptions;
 use Shapin\CustomerIO\Exception\DomainException;
 use Shapin\CustomerIO\Exception\LogicException;
 use Shapin\CustomerIO\Hydrator\Hydrator;
 use Shapin\CustomerIO\RequestBuilder;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class HttpApi
 {
@@ -29,15 +29,9 @@ abstract class HttpApi
      */
     protected $hydrator;
 
-    /**
-     * @var RequestBuilder
-     */
-    protected $requestBuilder;
-
-    public function __construct(HttpClient $httpClient, Hydrator $hydrator, RequestBuilder $requestBuilder)
+    public function __construct(HttpClientInterface $httpClient, Hydrator $hydrator)
     {
         $this->httpClient = $httpClient;
-        $this->requestBuilder = $requestBuilder;
         $this->hydrator = $hydrator;
     }
 
@@ -46,13 +40,10 @@ abstract class HttpApi
      */
     protected function httpGet(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        if (\count($params) > 0) {
-            $path .= '?'.http_build_query($params);
-        }
-
-        return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('GET', $path, $requestHeaders)
-        );
+        return $this->httpClient->request('GET', $path, [
+            'query' => $params,
+            'headers' => $requestHeaders,
+        ]);
     }
 
     /**
@@ -68,9 +59,10 @@ abstract class HttpApi
      */
     protected function httpPostRaw(string $path, $body, array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('POST', $path, $requestHeaders, $body)
-        );
+        return $this->httpClient->request('POST', $path, [
+            'body' => $body,
+            'headers' => $requestHeaders,
+        ]);
     }
 
     /**
@@ -78,9 +70,10 @@ abstract class HttpApi
      */
     protected function httpPut(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('PUT', $path, $requestHeaders, $this->createJsonBody($params))
-        );
+        return $this->httpClient->request('PUT', $path, [
+            'body' => $this->createJsonBody($params),
+            'headers' => $requestHeaders,
+        ]);
     }
 
     /**
@@ -88,9 +81,10 @@ abstract class HttpApi
      */
     protected function httpDelete(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->sendRequest(
-            $this->requestBuilder->create('DELETE', $path, $requestHeaders, $this->createJsonBody($params))
-        );
+        return $this->httpClient->request('DELETE', $path, [
+            'body' => $this->createJsonBody($params),
+            'headers' => $requestHeaders,
+        ]);
     }
 
     /**
