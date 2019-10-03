@@ -29,7 +29,7 @@ final class Event extends HttpApi
             $params['type'] = $type;
         }
 
-        $response = $this->httpPost("customers/$id/events", $params);
+        $response = $this->btPost("customers/$id/events", $params);
 
         if (200 !== $response->getStatusCode()) {
             $this->handleErrors($response);
@@ -43,7 +43,7 @@ final class Event extends HttpApi
      */
     public function trackAnonymousEvent(string $name, array $data = [])
     {
-        $response = $this->httpPost("events", [
+        $response = $this->btPost("events", [
             'name' => $name,
             'data' => $data,
         ]);

@@ -21,7 +21,7 @@ abstract class TestCase extends BaseTestCase
 
     public function getCustomerIOClient()
     {
-        $httpClient = HttpClient::create([
+        $behavioralTrackingClient = HttpClient::create([
             'base_uri' => 'https://track.customer.io/api/v1/',
             'auth_basic' => [self::SITE_ID, self::API_KEY],
             'headers' => [
@@ -29,6 +29,14 @@ abstract class TestCase extends BaseTestCase
             ],
         ]);
 
-        return new CustomerIOClient($httpClient);
+        $apiClient = HttpClient::create([
+            'base_uri' => 'https://api.customer.io/v1/api/',
+            'auth_basic' => [self::SITE_ID, self::API_KEY],
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+        ]);
+
+        return new CustomerIOClient($behavioralTrackingClient, $apiClient);
     }
 }

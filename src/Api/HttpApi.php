@@ -22,66 +22,86 @@ abstract class HttpApi
     /**
      * @var HttpClient
      */
-    protected $httpClient;
+    protected $behavioralTrackingClient;
+
+    /**
+     * @var HttpClient
+     */
+    protected $apiClient;
 
     /**
      * @var Hydrator
      */
     protected $hydrator;
 
-    public function __construct(HttpClientInterface $httpClient, Hydrator $hydrator)
+    public function __construct(HttpClientInterface $behavioralTrackingClient, HttpClientInterface $apiClient, Hydrator $hydrator)
     {
-        $this->httpClient = $httpClient;
+        $this->behavioralTrackingClient = $behavioralTrackingClient;
+        $this->apiClient = $apiClient;
         $this->hydrator = $hydrator;
     }
 
-    /**
-     * Send a GET request with query parameters.
-     */
-    protected function httpGet(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    protected function btPost(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->request('GET', $path, [
-            'query' => $params,
-            'headers' => $requestHeaders,
-        ]);
+        return $this->btPostRaw($path, $this->createJsonBody($params), $requestHeaders);
     }
 
-    /**
-     * Send a POST request with JSON-encoded parameters.
-     */
-    protected function httpPost(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    protected function btPostRaw(string $path, $body, array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpPostRaw($path, $this->createJsonBody($params), $requestHeaders);
-    }
-
-    /**
-     * Send a POST request with raw data.
-     */
-    protected function httpPostRaw(string $path, $body, array $requestHeaders = []): ResponseInterface
-    {
-        return $this->httpClient->request('POST', $path, [
+        return $this->behavioralTrackingClient->request('POST', $path, [
             'body' => $body,
             'headers' => $requestHeaders,
         ]);
     }
 
-    /**
-     * Send a PUT request with JSON-encoded parameters.
-     */
-    protected function httpPut(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    protected function btPut(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->request('PUT', $path, [
+        return $this->behavioralTrackingClient->request('PUT', $path, [
             'body' => $this->createJsonBody($params),
             'headers' => $requestHeaders,
         ]);
     }
 
-    /**
-     * Send a DELETE request with JSON-encoded parameters.
-     */
-    protected function httpDelete(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    protected function btDelete(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
     {
-        return $this->httpClient->request('DELETE', $path, [
+        return $this->behavioralTrackingClient->request('DELETE', $path, [
+            'body' => $this->createJsonBody($params),
+            'headers' => $requestHeaders,
+        ]);
+    }
+
+    protected function apiGet(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    {
+        return $this->apiClient->request('GET', $path, [
+            'query' => $params,
+            'headers' => $requestHeaders,
+        ]);
+    }
+
+    protected function apiPost(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    {
+        return $this->apiPostRaw($path, $this->createJsonBody($params), $requestHeaders);
+    }
+
+    protected function apiPostRaw(string $path, $body, array $requestHeaders = []): ResponseInterface
+    {
+        return $this->apiClient->request('POST', $path, [
+            'body' => $body,
+            'headers' => $requestHeaders,
+        ]);
+    }
+
+    protected function apiPut(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    {
+        return $this->apiClient->request('PUT', $path, [
+            'body' => $this->createJsonBody($params),
+            'headers' => $requestHeaders,
+        ]);
+    }
+
+    protected function apiDelete(string $path, array $params = [], array $requestHeaders = []): ResponseInterface
+    {
+        return $this->apiClient->request('DELETE', $path, [
             'body' => $this->createJsonBody($params),
             'headers' => $requestHeaders,
         ]);

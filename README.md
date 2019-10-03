@@ -18,8 +18,8 @@ $ composer require shapintv/customerio
 ## Usage
 
 ``` php
-// Create a HTTP Client
-$httpClient = HttpClient::create([
+// Create HTTP Clients
+$behavioralTrackingClient = HttpClient::create([
     'base_uri' => 'https://track.customer.io/api/v1/',
     'auth_basic' => [self::SITE_ID, self::API_KEY],
     'headers' => [
@@ -27,7 +27,15 @@ $httpClient = HttpClient::create([
     ],
 ]);
 
-$apiClient = new CustomerIOClient($httpClient);
+$apiClient = HttpClient::create([
+    'base_uri' => 'https://api.customer.io/v1/api/',
+    'auth_basic' => [self::SITE_ID, self::API_KEY],
+    'headers' => [
+        'Content-Type' => 'application/json',
+    ],
+]);
+
+$apiClient = new CustomerIOClient($behavioralTrackingClient, $apiClient);
 
 // Create a customer
 $apiClient->customers()->createOrUpdate('my_custom_id', [

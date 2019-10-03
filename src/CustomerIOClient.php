@@ -18,7 +18,12 @@ final class CustomerIOClient
     /**
      * @var HttpClient
      */
-    private $httpClient;
+    private $behavioralTrackingClient;
+
+    /**
+     * @var HttpClient
+     */
+    private $apiClient;
 
     /**
      * @var Hydrator
@@ -29,19 +34,20 @@ final class CustomerIOClient
      * The constructor accepts already configured HTTP clients.
      * Use the configure method to pass a configuration to the Client and create an HTTP Client.
      */
-    public function __construct(HttpClientInterface $customerioClient, Hydrator $hydrator = null)
+    public function __construct(HttpClientInterface $behavioralTrackingClient, HttpClientInterface $apiClient, Hydrator $hydrator = null)
     {
-        $this->httpClient = $customerioClient;
+        $this->behavioralTrackingClient = $behavioralTrackingClient;
+        $this->apiClient = $apiClient;
         $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
     public function customers(): Api\Customer
     {
-        return new Api\Customer($this->httpClient, $this->hydrator);
+        return new Api\Customer($this->behavioralTrackingClient, $this->apiClient, $this->hydrator);
     }
 
     public function events(): Api\Event
     {
-        return new Api\Event($this->httpClient, $this->hydrator);
+        return new Api\Event($this->behavioralTrackingClient, $this->apiClient, $this->hydrator);
     }
 }
