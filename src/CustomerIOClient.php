@@ -41,6 +41,11 @@ final class CustomerIOClient
         $this->hydrator = $hydrator ?: new ModelHydrator();
     }
 
+    public function campaigns(): Api\Campaign
+    {
+        return new Api\Campaign($this->behavioralTrackingClient, $this->apiClient, $this->hydrator);
+    }
+
     public function customers(): Api\Customer
     {
         return new Api\Customer($this->behavioralTrackingClient, $this->apiClient, $this->hydrator);
