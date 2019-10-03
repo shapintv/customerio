@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Shapin\CustomerIO\Tests\FunctionalTests;
 
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Shapin\CustomerIO\HttpClientConfigurator;
 use Shapin\CustomerIO\CustomerIOClient;
 use Symfony\Component\HttpClient\HttpClient;
 

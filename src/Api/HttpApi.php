@@ -13,7 +13,6 @@ use Shapin\CustomerIO\Exception\Domain as DomainExceptions;
 use Shapin\CustomerIO\Exception\DomainException;
 use Shapin\CustomerIO\Exception\LogicException;
 use Shapin\CustomerIO\Hydrator\Hydrator;
-use Shapin\CustomerIO\RequestBuilder;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -120,7 +119,7 @@ abstract class HttpApi
 
         $body = json_encode($params, \JSON_FORCE_OBJECT);
 
-        if (!is_string($body)) {
+        if (!\is_string($body)) {
             throw new LogicException('An error occured when encoding body: '.json_last_error_msg());
         }
 

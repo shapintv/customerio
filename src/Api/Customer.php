@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Api;
 
-use Shapin\CustomerIO\Configuration;
 use Shapin\CustomerIO\Exception;
 use Shapin\CustomerIO\Model;
-use Symfony\Component\Config\Definition\Processor;
 
 final class Customer extends HttpApi
 {

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Tests\FunctionalTests;
 
-use Shapin\CustomerIO\Exception\Domain\NotFoundException;
 use Shapin\CustomerIO\Model\Customer\CustomerCreatedOrUpdated;
 
 final class CustomerTest extends TestCase

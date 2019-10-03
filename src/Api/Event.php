@@ -11,7 +11,6 @@ namespace Shapin\CustomerIO\Api;
 
 use Shapin\CustomerIO\Exception;
 use Shapin\CustomerIO\Model;
-use Symfony\Component\Config\Definition\Processor;
 
 final class Event extends HttpApi
 {
@@ -43,7 +42,7 @@ final class Event extends HttpApi
      */
     public function trackAnonymousEvent(string $name, array $data = [])
     {
-        $response = $this->btPost("events", [
+        $response = $this->btPost('events', [
             'name' => $name,
             'data' => $data,
         ]);
