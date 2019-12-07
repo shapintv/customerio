@@ -9,25 +9,14 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO;
 
-use Shapin\CustomerIO\Hydrator\ModelHydrator;
 use Shapin\CustomerIO\Hydrator\Hydrator;
+use Shapin\CustomerIO\Hydrator\ModelHydrator;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class CustomerIOClient
 {
-    /**
-     * @var HttpClient
-     */
     private $behavioralTrackingClient;
-
-    /**
-     * @var HttpClient
-     */
     private $apiClient;
-
-    /**
-     * @var Hydrator
-     */
     private $hydrator;
 
     /**
