@@ -18,19 +18,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class HttpApi
 {
-    /**
-     * @var HttpClient
-     */
     protected $behavioralTrackingClient;
-
-    /**
-     * @var HttpClient
-     */
     protected $apiClient;
-
-    /**
-     * @var Hydrator
-     */
     protected $hydrator;
 
     public function __construct(HttpClientInterface $behavioralTrackingClient, HttpClientInterface $apiClient, Hydrator $hydrator)
