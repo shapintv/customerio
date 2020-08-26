@@ -16,6 +16,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
+        uses: docker://jakzal/phpqa:php7.3-alpine
         with:
-          args: analyze --no-progress
+          args: phpstan analyze --no-progress
