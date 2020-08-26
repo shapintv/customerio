@@ -38,4 +38,15 @@ final class Customer extends HttpApi
 
         return $this->hydrator->hydrate($response, Model\Customer\CustomerDeleted::class);
     }
+
+    public function suppress(string $id)
+    {
+        $response = $this->btPost("customers/$id/suppress");
+
+        if (200 !== $response->getStatusCode()) {
+            $this->handleErrors($response);
+        }
+
+        return $this->hydrator->hydrate($response, Model\Customer\CustomerSuppressed::class);
+    }
 }
