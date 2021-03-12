@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 DIR := ${CURDIR}
-QA_IMAGE := jakzal/phpqa:php7.3-alpine
+QA_IMAGE := jakzal/phpqa:php7.4-alpine
 
 define say_red =
     echo "\033[31m$1\033[0m"
