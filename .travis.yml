@@ -7,8 +7,8 @@ cache:
         - $HOME/.composer/cache/files
 
 php:
-    - 7.2
-    - 7.3
+    - 7.4
+    - 8.0
 
 env:
     global:
@@ -17,7 +17,7 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.2
+        - php: 7.4
           env: COVERAGE=true TEST_COMMAND="composer test-ci"
 
 before_install:

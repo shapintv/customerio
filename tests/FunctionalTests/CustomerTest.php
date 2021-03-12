@@ -15,7 +15,7 @@ final class CustomerTest extends TestCase
 {
     private $api;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->api = $this->getCustomerIOClient()->customers();
     }
