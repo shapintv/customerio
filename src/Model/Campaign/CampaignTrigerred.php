@@ -10,6 +10,11 @@ class CampaignTrigerred
 
     public function __construct(array $data)
     {
-        $this->id = $data['id'];
+        $this->id = (int) $data['id'];
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }

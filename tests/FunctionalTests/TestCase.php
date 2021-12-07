@@ -15,8 +15,8 @@ use Symfony\Component\HttpClient\HttpClient;
 
 abstract class TestCase extends BaseTestCase
 {
-    const SITE_ID = '3d7ceea5abfa75ec0890';
-    const API_KEY = 'c6af8922d5063c1cad2d';
+    public const SITE_ID = '3d7ceea5abfa75ec0890';
+    public const API_KEY = 'c6af8922d5063c1cad2d';
 
     public function getCustomerIOClient()
     {
