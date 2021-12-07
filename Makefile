@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 DIR := ${CURDIR}
-QA_IMAGE := jakzal/phpqa:php7.4-alpine
+QA_IMAGE := jakzal/phpqa:php8.0
 
 define say_red =
     echo "\033[31m$1\033[0m"
@@ -32,10 +32,10 @@ test: ## Launch tests
 	@vendor/bin/phpunit
 
 cs-lint: ## Verify check styles
-	@docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) php-cs-fixer fix --diff-format udiff --dry-run -vvv
+	@docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) php-cs-fixer fix --dry-run -vvv
 
 cs-fix: ## Apply Check styles
-	@docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) php-cs-fixer fix --diff-format udiff -vvv
+	@docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) php-cs-fixer fix -vvv
 
 phpstan: ## Run PHPStan
 	@docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) phpstan analyse

@@ -9,18 +9,19 @@ declare(strict_types=1);
 
 namespace Shapin\CustomerIO\Tests\FunctionalTests;
 
+use Shapin\CustomerIO\Api\Customer;
 use Shapin\CustomerIO\Model\Customer\CustomerCreatedOrUpdated;
 
 final class CustomerTest extends TestCase
 {
-    private $api;
+    private Customer $api;
 
     protected function setUp(): void
     {
         $this->api = $this->getCustomerIOClient()->customers();
     }
 
-    public function testCreateOrUpdate()
+    public function testCreateOrUpdate(): void
     {
         $response = $this->api->createOrUpdate('a_dump_id', [
             'email' => 'georges@abitbol.fr',

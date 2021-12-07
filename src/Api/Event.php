@@ -10,14 +10,17 @@ declare(strict_types=1);
 namespace Shapin\CustomerIO\Api;
 
 use Shapin\CustomerIO\Exception;
-use Shapin\CustomerIO\Model;
+use Shapin\CustomerIO\Model\Event\AnonymousEventCreated;
+use Shapin\CustomerIO\Model\Event\CustomerEventCreated;
 
 final class Event extends HttpApi
 {
     /**
      * @throws Exception
+     *
+     * @param array<int|string, mixed> $data
      */
-    public function trackCustomerEvent(string $id, string $name, array $data = [], string $type = null)
+    public function trackCustomerEvent(string $id, string $name, array $data = [], string $type = null): CustomerEventCreated
     {
         $params = [
             'name' => $name,
@@ -34,13 +37,15 @@ final class Event extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Event\CustomerEventCreated::class);
+        return $this->hydrate($response, CustomerEventCreated::class);
     }
 
     /**
      * @throws Exception
+     *
+     * @param array<int|string, mixed> $data
      */
-    public function trackAnonymousEvent(string $name, array $data = [])
+    public function trackAnonymousEvent(string $name, array $data = []): AnonymousEventCreated
     {
         $response = $this->btPost('events', [
             'name' => $name,
@@ -51,6 +56,6 @@ final class Event extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Event\AnonymousEventCreated::class);
+        return $this->hydrate($response, AnonymousEventCreated::class);
     }
 }

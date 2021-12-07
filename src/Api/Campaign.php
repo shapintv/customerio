@@ -10,14 +10,16 @@ declare(strict_types=1);
 namespace Shapin\CustomerIO\Api;
 
 use Shapin\CustomerIO\Exception;
-use Shapin\CustomerIO\Model;
+use Shapin\CustomerIO\Model\Campaign\CampaignTrigerred;
 
 final class Campaign extends HttpApi
 {
     /**
      * @throws Exception
+     *
+     * @param array<int|string, mixed> $params
      */
-    public function trigger(int $id, array $params = [])
+    public function trigger(int $id, array $params = []): CampaignTrigerred
     {
         $response = $this->apiPost("campaigns/$id/triggers", $params);
 
@@ -25,6 +27,6 @@ final class Campaign extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Campaign\CampaignTrigerred::class);
+        return $this->hydrate($response, CampaignTrigerred::class);
     }
 }
