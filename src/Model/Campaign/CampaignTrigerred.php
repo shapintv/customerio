@@ -6,10 +6,18 @@ namespace Shapin\CustomerIO\Model\Campaign;
 
 class CampaignTrigerred
 {
-    private $id;
+    private int $id;
 
+    /**
+     * @param array<int|string, mixed> $data
+     */
     public function __construct(array $data)
     {
+        if (!\array_key_exists('id', $data)) {
+            throw new \RuntimeException('No "id" found in data!');
+        }
+
+        /* @phpstan-ignore-next-line */
         $this->id = (int) $data['id'];
     }
 

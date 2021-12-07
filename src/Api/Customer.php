@@ -10,14 +10,18 @@ declare(strict_types=1);
 namespace Shapin\CustomerIO\Api;
 
 use Shapin\CustomerIO\Exception;
-use Shapin\CustomerIO\Model;
+use Shapin\CustomerIO\Model\Customer\CustomerCreatedOrUpdated;
+use Shapin\CustomerIO\Model\Customer\CustomerDeleted;
+use Shapin\CustomerIO\Model\Customer\CustomerSuppressed;
 
 final class Customer extends HttpApi
 {
     /**
      * @throws Exception
+     *
+     * @param array<int|string, mixed> $params
      */
-    public function createOrUpdate(string $id, array $params)
+    public function createOrUpdate(string $id, array $params): CustomerCreatedOrUpdated
     {
         $response = $this->btPut("customers/$id", $params);
 
@@ -25,10 +29,10 @@ final class Customer extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Customer\CustomerCreatedOrUpdated::class);
+        return $this->hydrate($response, CustomerCreatedOrUpdated::class);
     }
 
-    public function delete(string $id)
+    public function delete(string $id): CustomerDeleted
     {
         $response = $this->btDelete("customers/$id");
 
@@ -36,10 +40,10 @@ final class Customer extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Customer\CustomerDeleted::class);
+        return $this->hydrate($response, CustomerDeleted::class);
     }
 
-    public function suppress(string $id)
+    public function suppress(string $id): CustomerSuppressed
     {
         $response = $this->btPost("customers/$id/suppress");
 
@@ -47,6 +51,6 @@ final class Customer extends HttpApi
             $this->handleErrors($response);
         }
 
-        return $this->hydrator->hydrate($response, Model\Customer\CustomerSuppressed::class);
+        return $this->hydrate($response, CustomerSuppressed::class);
     }
 }
