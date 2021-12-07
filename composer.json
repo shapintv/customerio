@@ -28,9 +28,5 @@
         "psr-4": {
             "Shapin\\CustomerIO\\Tests\\": "tests/"
         }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
     }
 }
